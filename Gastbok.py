@@ -15,10 +15,18 @@ HTML = '''
     <input type="submit" value="Spara">
 </form>
 <h2>Inlägg</h2>
-<pre>{{ posts }}</pre>
+{% for post in posts %}
+    <div style="border: 1px solid #ccc; padding: 10px; margin-bottom: 10px;">
+        <strong>{{ post.namn }}</strong>
+        <small style="color: #666;"> – {{ post.tid }}</small>
+        <p style="white-space: pre-wrap;">{{ post.meddelande }}</p>
+    </div>
+{% else %}
+    <p>Inga inlägg ännu.</p>
+{% endfor %}
 '''
 
-# läs text från JSON-filen och returnera innehållet som en lista
+
 def load_posts():
     if not os.path.exists(JSON_FILE):
         return []
@@ -26,15 +34,13 @@ def load_posts():
         with open(JSON_FILE, encoding='utf-8') as f:
             return json.load(f)
     except Exception:
-        return []   # fel bör egentligen hanteras/meddelas ordentligt, men vi bryr oss inte om detta här
-
+        return []  
 @app.route('/')
 def json_demo():
-    return render_template_string(HTML, posts=json.dumps(load_posts(), indent=4, ensure_ascii=False))
+    return render_template_string(HTML, posts=load_posts())
 
 @app.route('/write-json', methods=['POST'])
 def write_json():
-    # ta emot listan från load_posts-funktionen och lägg till nytt innehåll
     posts = load_posts()
     posts.append({
         'namn': request.form.get('namn', ''),
@@ -46,6 +52,6 @@ def write_json():
     # spara den uppdaterade listan som text i JSON-fil
     with open(JSON_FILE, 'w', encoding='utf-8') as f:
         json.dump(posts, f, indent=4, ensure_ascii=False)
-    return render_template_string(HTML, posts=json.dumps(posts, indent=4, ensure_ascii=False))
+    return render_template_string(HTML, posts=posts)
 
 app.run(debug=True)

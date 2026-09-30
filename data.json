@@ -3,5 +3,20 @@
         "namn": "A1",
         "meddelande": "T1",
         "tid": "2026-09-24 10:43:36"
+    },
+    {
+        "namn": "a2",
+        "meddelande": "t2",
+        "tid": "2026-09-30 13:34:11"
+    },
+    {
+        "namn": "a3",
+        "meddelande": "t3",
+        "tid": "2026-09-30 13:56:40"
+    },
+    {
+        "namn": "Jonas",
+        "meddelande": "Jag gillar äpplen",
+        "tid": "2026-09-30 13:57:04"
     }
 ]
